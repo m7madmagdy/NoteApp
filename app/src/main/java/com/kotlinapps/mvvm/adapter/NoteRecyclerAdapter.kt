@@ -29,9 +29,6 @@ class NoteRecyclerAdapter(
     }
 
     override fun getItemCount(): Int {
-        if (blogList.size == 0) {
-            Toast.makeText(context, "Cleared", Toast.LENGTH_LONG).show()
-        }
         return blogList.size
     }
 

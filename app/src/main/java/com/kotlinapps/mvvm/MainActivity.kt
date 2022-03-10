@@ -2,14 +2,9 @@ package com.kotlinapps.mvvm
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -26,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var mainrecycler: RecyclerView
     private lateinit var _binding: ActivityMainBinding
+    private val blogList: ArrayList<Blog> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         _binding.deleteAll.setOnClickListener {
             viewModel.clear()
+            Toast.makeText(this, "Cleared", Toast.LENGTH_SHORT).show()
         }
     }
 
