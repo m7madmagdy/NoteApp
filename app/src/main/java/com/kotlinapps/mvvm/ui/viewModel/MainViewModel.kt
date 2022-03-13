@@ -1,4 +1,4 @@
-package com.kotlinapps.mvvm.adapter
+package com.kotlinapps.mvvm.ui.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

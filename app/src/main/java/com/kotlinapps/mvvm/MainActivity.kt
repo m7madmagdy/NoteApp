@@ -9,38 +9,42 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
-import com.kotlinapps.mvvm.adapter.MainViewModel
-import com.kotlinapps.mvvm.adapter.MainViewModelFactory
-import com.kotlinapps.mvvm.adapter.NoteRecyclerAdapter
+import com.kotlinapps.mvvm.ui.viewModel.MainViewModel
+import com.kotlinapps.mvvm.ui.viewModel.MainViewModelFactory
+import com.kotlinapps.mvvm.ui.NotesAdapter
 import com.kotlinapps.mvvm.databinding.ActivityMainBinding
 import com.kotlinapps.mvvm.model.Blog
 
 class MainActivity : AppCompatActivity() {
-
     private var viewManager = LinearLayoutManager(this)
     private lateinit var viewModel: MainViewModel
     private lateinit var mainrecycler: RecyclerView
-    private lateinit var _binding: ActivityMainBinding
-    private val blogList: ArrayList<Blog> = ArrayList()
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(_binding.root)
-
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         mainrecycler = findViewById(R.id.recycler)
-        requireNotNull(this).application
-        val factory = MainViewModelFactory()
-        viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
 
-        _binding.button.setOnClickListener {
+        requireNotNull(this).application
+
+        val factory = MainViewModelFactory()
+        viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
+
+        binding.button.setOnClickListener {
             addData()
         }
+
         initialiseAdapter()
 
-        _binding.deleteAll.setOnClickListener {
-            viewModel.clear()
-            Toast.makeText(this, "Cleared", Toast.LENGTH_SHORT).show()
+        binding.deleteAll.setOnClickListener {
+            if (mainrecycler.layoutManager?.itemCount == 0) {
+                Toast.makeText(this, "Nothing to Clear", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.clear()
+                Toast.makeText(this, "Cleared", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -51,20 +55,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeData() {
         viewModel.mutableLiveData.observe(this) {
-            mainrecycler.adapter = NoteRecyclerAdapter(viewModel, it, this)
+            mainrecycler.adapter = NotesAdapter(viewModel, it, this)
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun addData() {
-        val txtplce = findViewById<TextInputEditText>(R.id.titletxt)
-        val title = txtplce.text.toString()
-        if (title.isBlank()) {
-            Snackbar.make(_binding.root, "Enter Value", Snackbar.LENGTH_LONG).show()
+        val titleNote = binding.noteEditText.text.toString()
+        if (titleNote.isBlank()) {
+            Snackbar.make(binding.root, "Enter Value", Snackbar.LENGTH_LONG).show()
         } else {
-            val blog = Blog(title)
+            val blog = Blog(titleNote)
             viewModel.add(blog)
-            txtplce.text?.clear()
+            binding.noteEditText.text?.clear()
             mainrecycler.adapter?.notifyDataSetChanged()
         }
     }
