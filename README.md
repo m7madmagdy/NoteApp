@@ -1,3 +1,5 @@
 # MVVM_Note_App
 
-<img src="https://tinyurl.com/yayzhws4" width="250" align="right" hspace="20">
+<img src="https://m7madmagdy.github.io/pages/empty.png" width="150" align="left">
+<img src="https://m7madmagdy.github.io/pages/tasks.png" width="150" align="left">
+<img src="https://m7madmagdy.github.io/pages/addTask.png" width="150" align="left">
